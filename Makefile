@@ -1,6 +1,10 @@
 ROM:=rom.gbc
 C_SOURCES:=$(wildcard *.c)
 OBJ:=$(C_SOURCES:.c=.o)
+BUILD_OUTPUTS:=$(OBJ) $(ROM)
+BUILD_OUTPUTS+=$(C_SOURCES:.c=.asm) $(C_SOURCES:.c=.lst) $(C_SOURCES:.c=.sym)
+BUILD_OUTPUTS+=$(ROM:.gbc=.ihx) $(ROM:.gbc=.map)
+BUILD_OUTPUTS+=$(ROM:.gbc=.noi) $(ROM:.gbc=.cdb)
 CC:=lcc
 # Only needed for `install'.
 CHROMATIC_CLI:=chromatic-cli
@@ -33,7 +37,7 @@ install: $(ROM)
 	"$(CHROMATIC_CLI)" write-homebrew --player "$(PLAYER)" "$(ROM)"
 
 clean:
-	rm -f $(OBJ) $(ROM)
+	rm -f $(BUILD_OUTPUTS)
 
 ### Dependencies
 main.o: main.c game.h
