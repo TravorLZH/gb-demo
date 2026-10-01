@@ -1,0 +1,14 @@
+# GBDK build artifacts
+*.o
+*.asm
+*.lst
+*.sym
+*.ihx
+*.map
+*.noi
+*.cdb
+*.gb
+*.gbc
+
+# Output from older builds
+/build/
