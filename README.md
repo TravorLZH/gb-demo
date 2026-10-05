@@ -33,9 +33,8 @@ mode, and returns to the direct positioning mode.
 
 In direct positioning or velocity configuration mode, press `START` to launch
 the block with the stored velocity. Press `START` again to stop. During motion,
-arrow keys, `SELECT`, and `B` are ignored. If the next position would put any
-part of the block outside the screen, the velocity is cleared, and the game
-returns to the direct positioning mode.
+arrow keys, `SELECT`, and `B` are ignored. The block rebounds once it hits a
+boundary
 
 ### Color themes
 

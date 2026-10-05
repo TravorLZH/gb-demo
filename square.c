@@ -97,10 +97,13 @@ void update_square(struct game_state *state)
 		state->square_center_x=center_x;
 		state->square_center_y=center_y;
 	}else{
-		/* Exit motion mode and clear velocity if we reach an invalid
-		 * coordinate */
-		state->velocity_x=0;
-		state->velocity_y=0;
-		state->flags&=~FLG_MOTION;
+		/* Bounce it if hitting a wall
+		 *
+		 * We only reflect the velocity here. The position update will
+		 * be done in the next call. */
+		if(!SQUARE_X_VALID(center_x))
+			state->velocity_x=-state->velocity_x;
+		if(!SQUARE_Y_VALID(center_y))
+			state->velocity_y=-state->velocity_y;
 	}
 }
