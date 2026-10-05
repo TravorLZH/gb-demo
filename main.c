@@ -19,15 +19,13 @@ static void handle_buttons(struct game_state *state)
 	uint8_t buttons=joypad();
 	uint8_t old_color_index=state->color_index;
 
-	/* A and B act once per press; held directions move every frame. */
 	state->newly_pressed=buttons & ~state->buttons;
 	state->buttons=buttons;
 
-	if(state->newly_pressed & J_B)
-		state->color_index=0;
-	else if(state->newly_pressed & J_A)
+	if(state->newly_pressed & J_A)
 		state->color_index=(state->color_index + 1) & 3;
 
+	/* Update color only if color_index is modified */
 	if(state->color_index!=old_color_index){
 		set_bkg_palette_entry(0,0,colors[state->color_index]);
 		set_sprite_palette_entry(0,3,
@@ -39,26 +37,23 @@ static void handle_buttons(struct game_state *state)
 	if((state->newly_pressed & J_SELECT) && !(state->flags & FLG_MOTION))
 		state->flags^=FLG_VELOCITY;
 
-	/* The START button behaves differently based on flags
-	 *
-	 * In velocity configuration mode, START enters motion mode using the
-	 * given velocity and exits velocity configuration mode.
-	 *
-	 * When in neither velocity configuration nor motion mode, START
-	 * recenters the square.
-	 *
-	 * In motion mode, START stops the motion by clearing FLG_MOTION.
-	 */
-	if(state->newly_pressed & J_START){
+	/* B clears configured velocity or recenters in direct positioning. */
+	if(state->newly_pressed & J_B){
 		if(state->flags & FLG_VELOCITY){
-			state->flags&=~FLG_VELOCITY;
-			state->flags|=FLG_MOTION;
+			state->velocity_x=0;
+			state->velocity_y=0;
 		}else if(!(state->flags & FLG_MOTION)){
 			state->square_center_x=SCREENWIDTH / 2;
 			state->square_center_y=SCREENHEIGHT / 2;
-		}else{
-			state->flags^=FLG_MOTION;
 		}
+	}
+
+	/* START toggles motion using the stored velocity and exits velocity
+	 * configuration mode.
+	 */
+	if(state->newly_pressed & J_START){
+		state->flags&=~FLG_VELOCITY;
+		state->flags^=FLG_MOTION;
 	}
 
 	update_square(state);
