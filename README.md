@@ -7,12 +7,39 @@ A demo repo for me to explore [Game Boy][gb] programming.
 ## Features
 
 After booting up the game boy, you will see a block appearing in the center of
-the screen, pressing arrow keys moves it. Hit `START` to recenter the block.
+the screen. The block can be repositioned and, with a proper use of `SELECT` and `START` key, it can be put into motion.
+
+### Direct positioning mode
+
+This is the default mode after startup. Pressing arrow keys moves the block.
+Hitting `START` recenters it.
+
+### Velocity configuration mode
+
+When in direct positioning mode, pressing `SELECT` enters the velocity
+configuration mode. In this mode, instead of moving the block, the arrow keys
+adjust its velocity. If unconfigured, the default velocity is zero.
+
+By pressing and releasing an arrow key, the corresponding velocity gets updated
+by one pixel per frame: `LEFT`/`RIGHT` decreases/increases horizontal velocity,
+and `UP`/`DOWN` decreases/increases vertical velocity. The block stays in
+place.
+
+In this mode, hitting `SELECT` saves the velocity, exits the configuration
+mode, and returns to the direct positioning mode.
+
+### Motion mode
+
+In velocity configuration mode, press `START` to launch the block with the
+configured velocity. Press `START` again to stop. During motion, arrow keys and
+`SELECT` are ignored. If the next position would put any part of the block
+outside the screen, the velocity is cleared, and the game returns to the direct
+positioning mode.
+
+### Color themes
 
 The key `A` loops through four different color themes for the display. Press
 `B` to restore the default white-on-black theme.
-
-I am still working to explore functions for the `SELECT` key.
 
 ## Build
 
